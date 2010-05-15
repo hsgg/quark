@@ -6,7 +6,6 @@ AM_CPPFLAGS = \
   $(GTK_CFLAGS) \
   $(GCONF_CFLAGS) \
   $(GDK_PIXBUF_CFLAGS) \
-  -DGTK_DISABLE_DEPRECATED \
   -DG_DISABLE_DEPRECATED \
   -DG_LOG_DOMAIN=\"strange-quark\" \
   -DPIXMAPDIR=\"$(pixmapdir)\" \
