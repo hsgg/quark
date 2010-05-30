@@ -11,6 +11,7 @@
 #include <unistd.h>    /* for sleep() */
 
 #define QUARK_ICON "quark-icon"
+#define QUARK_ICON_FILE _( PIXMAPDIR G_DIR_SEPARATOR_S "quark.png" )
 
 #define QUARK_GCONF_ROOT        "/apps/quark"
 #define QUARK_GCONF_ROOT_RECENT "/apps/quark/recent"
@@ -22,6 +23,7 @@
 #define RECENT_0                 QUARK_GCONF_ROOT_RECENT "/0"
 
 static GtkWidget *trayicon;
+static GtkStatusIcon *systray;
 static GtkWidget *menu;
 static GtkWidget *editor;
 #if 0
@@ -205,6 +207,12 @@ applet_user_event (GtkWidget *widget, GdkEvent *event, gpointer data)
         case 3: /* right */
             /* note: if you're gunna bind this, then you should return TRUE
                so the menu doesn't pop up probably.. */
+            if (widget == systray) {
+                if (menu) {
+                    gtk_menu_popup (GTK_MENU (menu), NULL, NULL, NULL, NULL,
+                                    event->button.button, event->button.time);
+                }
+            }
             break;
         }
         break;
@@ -381,6 +389,21 @@ applet_song_change (QuarkClient *qc, gint pos, gpointer data)
         g_free (name);
     } else
         trayicon_set_tooltip (ti, "Quark");
+}
+static void
+applet_song_change_systray (QuarkClient *qc, gint pos, gpointer data)
+{
+    GtkStatusIcon *ti = data;
+    QuarkClientTrack *curtrack = quarkclient_playlist_nth (qc, pos);
+
+    if (curtrack) {
+        gchar *name = g_path_get_basename (quarkclient_track_path (curtrack));
+        gchar *s = g_strdup_printf(_("Playing: %s"), name);
+        gtk_status_icon_set_tooltip_text (ti, s);
+        g_free(s);
+        g_free (name);
+    } else
+        gtk_status_icon_set_tooltip_text (ti, "Quark");
 }
 
 void
@@ -566,7 +589,17 @@ applet_startup ()
     /* XXX set this with the song */
     trayicon_set_tooltip (TRAYICON (trayicon), "Quark");
 
-    trayicon_show (TRAYICON (trayicon));
+    //trayicon_show (TRAYICON (trayicon));
+
+    systray = gtk_status_icon_new_from_file (QUARK_ICON_FILE);
+    gtk_status_icon_set_title(systray, "Quark");
+    gtk_status_icon_set_tooltip_text(systray, "Strange Quark");
+    g_signal_connect(systray, "button-press-event",
+                     G_CALLBACK(applet_user_event), qc);
+    g_signal_connect(systray, "scroll-event",
+                     G_CALLBACK(applet_user_event), qc);
+    g_signal_connect (qc, "playlist-position-changed",
+                      G_CALLBACK (applet_song_change_systray), systray);
 
     if (gconf_client_get_bool (gconf, PLAY_ON_RUN, NULL))
         quarkclient_play (qc, NULL);
