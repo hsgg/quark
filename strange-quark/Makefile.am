@@ -19,8 +19,6 @@ strange_quark_SOURCES = \
   main.c \
   applet.h \
   applet.c \
-  trayicon.h \
-  trayicon.c \
   quarkclient.h \
   quarkclient.c \
   editor.h \

@@ -1,7 +1,6 @@
 #include "config.h"
 
 #include "gettext.h"
-#include "trayicon.h"
 #include "quarkclient.h"
 #include "editor.h"
 
@@ -10,7 +9,6 @@
 #include <string.h>    /* for strcmp() */
 #include <unistd.h>    /* for sleep() */
 
-#define QUARK_ICON "quark-icon"
 #define QUARK_ICON_FILE _( PIXMAPDIR G_DIR_SEPARATOR_S "quark.png" )
 
 #define QUARK_GCONF_ROOT        "/apps/quark"
@@ -22,7 +20,6 @@
 #define NUM_RECENT               QUARK_GCONF_ROOT_RECENT "/num_recent"
 #define RECENT_0                 QUARK_GCONF_ROOT_RECENT "/0"
 
-static GtkWidget *trayicon;
 static GtkStatusIcon *systray;
 static GtkWidget *menu;
 static GtkWidget *editor;
@@ -205,13 +202,9 @@ applet_user_event (GtkWidget *widget, GdkEvent *event, gpointer data)
                               event->button.state & GDK_SHIFT_MASK);
             break;
         case 3: /* right */
-            /* note: if you're gunna bind this, then you should return TRUE
-               so the menu doesn't pop up probably.. */
-            if (widget == systray) {
-                if (menu) {
-                    gtk_menu_popup (GTK_MENU (menu), NULL, NULL, NULL, NULL,
-                                    event->button.button, event->button.time);
-                }
+            if (menu) {
+                gtk_menu_popup (GTK_MENU (menu), NULL, NULL, NULL, NULL,
+                                event->button.button, event->button.time);
             }
             break;
         }
@@ -234,32 +227,6 @@ applet_user_event (GtkWidget *widget, GdkEvent *event, gpointer data)
     return FALSE;
 }
 
-static void
-applet_load_stock (QuarkClient *qc)
-{
-    GtkIconFactory *factory;
-    GError *e = NULL;
-
-    gtk_icon_factory_add_default (factory = gtk_icon_factory_new ());
-
-    applet_icon = gdk_pixbuf_new_from_file (PIXMAPDIR G_DIR_SEPARATOR_S
-                                            "quark.png", &e);
-    if (!applet_icon) {
-        gchar *msg = g_strdup_printf 
-            (_("Failed to load the Quark icon, quark is probably not "
-               "installed correctly. The error given was '%s'."),
-             e->message);
-        g_free (e->message);
-        e->message = msg;
-        applet_error (qc, e, NULL);
-    } else {
-        GtkIconSet *set;
-
-        set = gtk_icon_set_new_from_pixbuf (applet_icon);
-        gtk_icon_factory_add (factory, QUARK_ICON, set);
-        gtk_icon_set_unref (set);
-    }
-}
 
 static void
 applet_recent_item (GtkMenuItem *item, gpointer data)
@@ -376,22 +343,7 @@ applet_gconf_changed (GConfClient *gconf,
 }
 
 static void
-applet_song_change (QuarkClient *qc, gint pos, gpointer data)
-{
-    TrayIcon *ti = TRAYICON (data);
-    QuarkClientTrack *curtrack = quarkclient_playlist_nth (qc, pos);
-
-    if (curtrack) {
-        gchar *name = g_path_get_basename (quarkclient_track_path (curtrack));
-        gchar *s = g_strdup_printf(_("Playing: %s"), name);
-        trayicon_set_tooltip (ti, s);
-        g_free(s);
-        g_free (name);
-    } else
-        trayicon_set_tooltip (ti, "Quark");
-}
-static void
-applet_song_change_systray (QuarkClient *qc, gint pos, gpointer data)
+applet_song_change(QuarkClient *qc, gint pos, gpointer data)
 {
     GtkStatusIcon *ti = data;
     QuarkClientTrack *curtrack = quarkclient_playlist_nth (qc, pos);
@@ -412,7 +364,7 @@ applet_startup ()
     GtkWidget *item, *image;
 
     qc = quarkclient_new ();
-    quarkclient_set_default_error_handler (qc, applet_error, trayicon);
+    quarkclient_set_default_error_handler (qc, applet_error, systray);
 
     quarkclient_open (qc, "strange", NULL);
 
@@ -421,8 +373,6 @@ applet_startup ()
                           GCONF_CLIENT_PRELOAD_NONE, NULL);
     gconf_client_notify_add (gconf, QUARK_GCONF_ROOT, applet_gconf_changed,
                              NULL, NULL, NULL);
-
-    applet_load_stock (qc);
 
     editor = editor_new(qc, gconf, applet_icon);
 
@@ -573,23 +523,6 @@ applet_startup ()
 
     gtk_widget_show_all (GTK_WIDGET (menu));
 
-    trayicon = trayicon_new ();
-
-    g_signal_connect(trayicon, "button-press-event",
-                     G_CALLBACK(applet_user_event), qc);
-    g_signal_connect(trayicon, "scroll-event",
-                     G_CALLBACK(applet_user_event), qc);
-
-    g_signal_connect (qc, "playlist-position-changed",
-                      G_CALLBACK (applet_song_change), trayicon);
-
-    trayicon_set_name (TRAYICON (trayicon), "strange-quark");
-    trayicon_set_menu (TRAYICON (trayicon), menu);
-    trayicon_set_image (TRAYICON (trayicon), QUARK_ICON);
-    /* XXX set this with the song */
-    trayicon_set_tooltip (TRAYICON (trayicon), "Quark");
-
-    //trayicon_show (TRAYICON (trayicon));
 
     systray = gtk_status_icon_new_from_file (QUARK_ICON_FILE);
     gtk_status_icon_set_title(systray, "Quark");
@@ -599,7 +532,7 @@ applet_startup ()
     g_signal_connect(systray, "scroll-event",
                      G_CALLBACK(applet_user_event), qc);
     g_signal_connect (qc, "playlist-position-changed",
-                      G_CALLBACK (applet_song_change_systray), systray);
+                      G_CALLBACK (applet_song_change), systray);
 
     if (gconf_client_get_bool (gconf, PLAY_ON_RUN, NULL))
         quarkclient_play (qc, NULL);
@@ -610,5 +543,4 @@ applet_shutdown ()
 {
     g_object_unref (G_OBJECT (qc));
     g_object_unref (G_OBJECT (gconf));
-    gtk_object_destroy (GTK_OBJECT (trayicon));
 }
