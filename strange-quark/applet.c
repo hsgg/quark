@@ -20,7 +20,7 @@
 #define NUM_RECENT               QUARK_GCONF_ROOT_RECENT "/num_recent"
 #define RECENT_0                 QUARK_GCONF_ROOT_RECENT "/0"
 
-static GtkStatusIcon *systray;
+static GtkStatusIcon *trayicon;
 static GtkWidget *menu;
 static GtkWidget *editor;
 #if 0
@@ -364,7 +364,7 @@ applet_startup ()
     GtkWidget *item, *image;
 
     qc = quarkclient_new ();
-    quarkclient_set_default_error_handler (qc, applet_error, systray);
+    quarkclient_set_default_error_handler (qc, applet_error, trayicon);
 
     quarkclient_open (qc, "strange", NULL);
 
@@ -524,15 +524,15 @@ applet_startup ()
     gtk_widget_show_all (GTK_WIDGET (menu));
 
 
-    systray = gtk_status_icon_new_from_file (QUARK_ICON_FILE);
-    gtk_status_icon_set_title(systray, "Quark");
-    gtk_status_icon_set_tooltip_text(systray, "Strange Quark");
-    g_signal_connect(systray, "button-press-event",
+    trayicon = gtk_status_icon_new_from_file (QUARK_ICON_FILE);
+    gtk_status_icon_set_title(trayicon, "Quark");
+    gtk_status_icon_set_tooltip_text(trayicon, "Strange Quark");
+    g_signal_connect(trayicon, "button-press-event",
                      G_CALLBACK(applet_user_event), qc);
-    g_signal_connect(systray, "scroll-event",
+    g_signal_connect(trayicon, "scroll-event",
                      G_CALLBACK(applet_user_event), qc);
     g_signal_connect (qc, "playlist-position-changed",
-                      G_CALLBACK (applet_song_change), systray);
+                      G_CALLBACK (applet_song_change), trayicon);
 
     if (gconf_client_get_bool (gconf, PLAY_ON_RUN, NULL))
         quarkclient_play (qc, NULL);
