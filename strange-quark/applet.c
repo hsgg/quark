@@ -544,3 +544,5 @@ applet_shutdown ()
     g_object_unref (G_OBJECT (qc));
     g_object_unref (G_OBJECT (gconf));
 }
+
+/* vim: set sw=4 sts=4 et cino+=(0 : */
