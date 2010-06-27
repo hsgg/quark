@@ -525,14 +525,18 @@ applet_startup ()
 
 
     trayicon = gtk_status_icon_new_from_file (QUARK_ICON_FILE);
+
     gtk_status_icon_set_title(trayicon, "Quark");
     gtk_status_icon_set_tooltip_text(trayicon, "Strange Quark");
+
     g_signal_connect(trayicon, "button-press-event",
                      G_CALLBACK(applet_user_event), qc);
     g_signal_connect(trayicon, "scroll-event",
                      G_CALLBACK(applet_user_event), qc);
+
     g_signal_connect (qc, "playlist-position-changed",
                       G_CALLBACK (applet_song_change), trayicon);
+
 
     if (gconf_client_get_bool (gconf, PLAY_ON_RUN, NULL))
         quarkclient_play (qc, NULL);
