@@ -274,11 +274,7 @@ static void
 editor_song_changed (QuarkClient *qc, gint pos, gpointer data)
 {
     Editor *ed = EDITOR(data);
-    static GtkTreeIter it;
-
-    if (gtk_list_store_iter_is_valid (GTK_LIST_STORE (ed->data), &it))
-        gtk_list_store_set (GTK_LIST_STORE (ed->data), &it,
-                            PLAYING_COLUMN, NULL, -1);
+    GtkTreeIter it;
 
     if (gtk_tree_model_get_iter_first (GTK_TREE_MODEL (ed->data), &it)) {
         while (pos-- > 0)
