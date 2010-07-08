@@ -1,0 +1,112 @@
+body {
+  background: white;
+  color: black;
+  font-family: sans-serif;
+}
+
+img {
+  border-width: 0;
+}
+
+h1 {
+  background-color: #eecccc;
+  font-weight: bold;
+  border-top: 1px black solid;
+  border-bottom: 1px black solid;
+  font-size: 200%;
+  text-align: center;
+}
+
+h2 {
+  text-align: center;
+  font-weight: bold;
+  font-size: 150%;
+  border-bottom: 2px #000 solid;
+}
+
+h3 {
+  font-size: 110%;
+  font-weight: bold;
+}
+
+a:link {
+  color: #569f1a;
+}
+
+a:visited {
+}
+
+blockquote {
+  text-align: center;
+  padding: 0.25em;
+  border: 2px #000 solid;
+  background-color: #f3fc02;
+  margin-left: 0;
+  font-style: italic;
+}
+
+.toplink {
+  float: right;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 1em;
+}
+
+.menu {
+  text-align: center;
+}
+
+.about {
+}
+
+.faq {
+}
+
+.faq > ul {
+  list-style: decimal;
+}
+
+.faq .question {
+}
+
+.faq .answer {
+}
+
+.download {
+}
+
+.releases {
+}
+
+.releasenotes {
+  font-family: monospace;
+  margin: 0 2em 0 2em;
+}
+
+.shots {
+  text-align: center;
+}
+
+.shot {
+}
+
+.license {
+}
+
+.licensequote {
+  font-family: monospace;
+  padding: 0 3em 0 3em;
+}
+
+.contact {
+}
+
+.command {
+  font-style: italic;
+}
+
+.name {
+  font-style: italic;
+}
