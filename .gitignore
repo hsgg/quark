@@ -21,6 +21,7 @@ pixmaps/Makefile.in
 po/Makefile
 po/Makefile.in
 po/POTFILES
+po/ko.gmo
 quark/.deps/
 quark/Makefile
 quark/Makefile.in
