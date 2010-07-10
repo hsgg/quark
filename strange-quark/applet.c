@@ -9,7 +9,7 @@
 #include <string.h>    /* for strcmp() */
 #include <unistd.h>    /* for sleep() */
 
-#define QUARK_ICON_FILE _( PIXMAPDIR G_DIR_SEPARATOR_S "quark.png" )
+#define QUARK_ICON_FILE ( PIXMAPDIR G_DIR_SEPARATOR_S "quark.png" )
 
 #define QUARK_GCONF_ROOT        "/apps/quark"
 #define QUARK_GCONF_ROOT_RECENT "/apps/quark/recent"
