@@ -9,6 +9,7 @@
 #include <string.h>    /* for strcmp() */
 #include <unistd.h>    /* for sleep() */
 
+#define QUARK_ICON "quark-icon"
 #define QUARK_ICON_FILE ( PIXMAPDIR G_DIR_SEPARATOR_S "quark.png" )
 
 #define QUARK_GCONF_ROOT        "/apps/quark"
@@ -227,6 +228,31 @@ applet_user_event (GtkWidget *widget, GdkEvent *event, gpointer data)
     return FALSE;
 }
 
+static void
+applet_load_stock (QuarkClient *qc)
+{
+    GtkIconFactory *factory;
+    GError *e = NULL;
+
+    gtk_icon_factory_add_default (factory = gtk_icon_factory_new ());
+
+    applet_icon = gdk_pixbuf_new_from_file (QUARK_ICON_FILE, &e);
+    if (!applet_icon) {
+        gchar *msg = g_strdup_printf
+            (_("Failed to load the Quark icon, quark is probably not "
+               "installed correctly. The error given was '%s'."),
+             e->message);
+        g_free (e->message);
+        e->message = msg;
+        applet_error (qc, e, NULL);
+    } else {
+        GtkIconSet *set;
+
+        set = gtk_icon_set_new_from_pixbuf (applet_icon);
+        gtk_icon_factory_add (factory, QUARK_ICON, set);
+        gtk_icon_set_unref (set);
+    }
+}
 
 static void
 applet_recent_item (GtkMenuItem *item, gpointer data)
@@ -373,6 +399,8 @@ applet_startup ()
                           GCONF_CLIENT_PRELOAD_NONE, NULL);
     gconf_client_notify_add (gconf, QUARK_GCONF_ROOT, applet_gconf_changed,
                              NULL, NULL, NULL);
+
+    applet_load_stock (qc);
 
     editor = editor_new(qc, gconf, applet_icon);
 
