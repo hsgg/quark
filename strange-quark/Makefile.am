@@ -27,8 +27,8 @@ strange_quark_SOURCES = \
   marshalers.c
 
 marshalers: marshalers.list
-	glib-genmarshal --header --prefix=quark_cclosure_marshal $^ > marshalers.h
-	glib-genmarshal --body --prefix=quark_cclosure_marshal $^ > marshalers.c
+	glib-genmarshal --header --prefix=quark_cclosure_marshal $^ > $@.h
+	glib-genmarshal --body --prefix=quark_cclosure_marshal $^ > $@.c
 
 applications_DATA = \
   quark.desktop
