@@ -7,10 +7,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Quark 3.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2003-10-07 02:26-0400\n"
+"POT-Creation-Date: 2010-08-15 23:32+0200\n"
 "PO-Revision-Date: 2003-06-18 20:11+0900\n"
 "Last-Translator: Kang Jeong-Hee <Keizi@mail.co.kr>\n"
 "Language-Team: Korean <ko@li.org>\n"
+"Language: ko\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -56,7 +57,7 @@ msgstr ""
 msgid "Choose name for bookmark:"
 msgstr ""
 
-#: strange-quark/applet.c:241
+#: strange-quark/applet.c:242
 #, c-format
 msgid ""
 "Failed to load the Quark icon, quark is probably not installed correctly. "
@@ -65,68 +66,68 @@ msgstr ""
 "쿼크 아이콘을 못 읽습니다. 아마 쿼크를 제대로 안 깐 것 같습니다.에러 내용은 "
 "'%s'입니다."
 
-#: strange-quark/applet.c:378
+#: strange-quark/applet.c:379
 #, c-format
 msgid "Playing: %s"
 msgstr ""
 
-#: strange-quark/applet.c:408
+#: strange-quark/applet.c:409
 msgid "_Play"
 msgstr "재생(_P)"
 
-#: strange-quark/applet.c:414
+#: strange-quark/applet.c:415
 msgid "Pa_use"
 msgstr "일시정지(_U)"
 
-#: strange-quark/applet.c:420
+#: strange-quark/applet.c:421
 msgid "_Stop"
 msgstr "정지(_S)"
 
-#: strange-quark/applet.c:429
+#: strange-quark/applet.c:430
 msgid "_Next track"
 msgstr "다음(_N)"
 
-#: strange-quark/applet.c:436
+#: strange-quark/applet.c:437
 msgid "Pre_vious track"
 msgstr "이전(_V)"
 
-#: strange-quark/applet.c:445
+#: strange-quark/applet.c:446
 msgid "_Recent"
 msgstr ""
 
-#: strange-quark/applet.c:452
+#: strange-quark/applet.c:453
 msgid "_Load songs..."
 msgstr "노래 읽기(_L)..."
 
-#: strange-quark/applet.c:458
+#: strange-quark/applet.c:459
 msgid "_Append songs..."
 msgstr "노래 추가(_A)..."
 
-#: strange-quark/applet.c:464
+#: strange-quark/applet.c:465
 msgid "_Clear playlist"
 msgstr "재생목록 비우기(_C)"
 
-#: strange-quark/applet.c:473
+#: strange-quark/applet.c:474
 msgid "Play on startup"
 msgstr "뜰 때 재생 시작"
 
-#: strange-quark/applet.c:482
+#: strange-quark/applet.c:483
 msgid "Loop playlist"
 msgstr "재생목록 반복"
 
-#: strange-quark/applet.c:491
+#: strange-quark/applet.c:492
 msgid "Random order"
 msgstr "무작위 재상"
 
-#: strange-quark/applet.c:504
+#: strange-quark/applet.c:505
 msgid "_Bookmarks"
 msgstr ""
 
-#: strange-quark/applet.c:511
+#: strange-quark/applet.c:512
 msgid "_Save playlist as bookmark"
 msgstr ""
 
-#: strange-quark/applet.c:522
+#: strange-quark/applet.c:523
 msgid "_Edit playlist..."
 msgstr "재생목록 편집(_E)..."
 
@@ -183,10 +184,10 @@ msgstr "재생목록 편집 - 쿼크"
 msgid "Playlist Editor"
 msgstr "재생목록 편집기"
 
-#: strange-quark/editor.c:440
+#: strange-quark/editor.c:436
 msgid "Append Songs - Quark"
 msgstr "노래 추가 - 쿼크"
 
-#: strange-quark/editor.c:441
+#: strange-quark/editor.c:437
 msgid "Play Songs - Quark"
 msgstr "노래 재생 - 쿼크"
