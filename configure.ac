@@ -1,5 +1,5 @@
 AC_PREREQ([2.54])
-AC_INIT([quark], [3.23], [http://bugs.com/])
+AC_INIT([quark], [3.24], [http://bugs.com/])
 AM_INIT_AUTOMAKE
 AC_CONFIG_SRCDIR([quark/main.c])
 
